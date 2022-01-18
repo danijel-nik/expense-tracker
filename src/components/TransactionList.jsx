@@ -1,10 +1,19 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { GlobalContext } from "../context/GlobalState"
 import Transaction from "./Transaction"
 
 const TransactionList = () => {
-    const { transactions } = useContext(GlobalContext)
-    
+    const { transactions, getTransactions } = useContext(GlobalContext)
+
+    useEffect(() => {
+        getTransactions()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    useEffect(() => {
+        console.log(transactions)
+    }, [transactions])
+
     return (
         <>
             <h3>History</h3>
@@ -12,8 +21,8 @@ const TransactionList = () => {
                 <ul className="list">
                 {transactions.map(transaction => (
                     <Transaction
-                        key={transaction.id}
-                        id={transaction.id}
+                        key={transaction._id}
+                        id={transaction._id}
                         text={transaction.text}
                         amount={transaction.amount}
                     />
