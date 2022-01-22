@@ -10,10 +10,6 @@ const TransactionList = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    useEffect(() => {
-        console.log(transactions)
-    }, [transactions])
-
     return (
         <>
             <h3>History</h3>

@@ -13,7 +13,7 @@ const initialState = {
         */
     ],
     error: null,
-    loading: true
+    loading: false
 }
 
 // Create context
@@ -25,10 +25,10 @@ export const GlobalProvider = ({ children }) => {
 
     // Actions
     const getTransactions = async () => {
+        dispatch({ type: 'LOADING' })
         try {
             const res = await axios.get('/api/v1/transactions')
             const { data } = res.data
-
             dispatch({
                 type: 'GET_TRANSACTIONS',
                 payload: data
@@ -42,6 +42,7 @@ export const GlobalProvider = ({ children }) => {
     }
 
     const deleteTransaction = async (id) => {
+        dispatch({ type: 'LOADING' })
         try {
             await axios.delete(`/api/v1/transactions/${id}`)
             dispatch({
@@ -57,8 +58,14 @@ export const GlobalProvider = ({ children }) => {
     }
 
     const addTransaction = async (transaction) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        dispatch({ type: 'LOADING' })
         try {
-            const newTransaction = await (await axios.post('/api/v1/transactions', transaction))
+            const newTransaction = await axios.post('/api/v1/transactions', transaction, config)
             dispatch({
                 type: 'ADD_TRANSACTION',
                 payload: newTransaction.data.data
